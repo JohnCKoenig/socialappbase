@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:EnvShare.Views.Home.Chat"
+            SelectedTabColor="#04c75f"
+            UnselectedTabColor="DarkGray"
+            BarBackgroundColor="Black"
+            BarTextColor="#04c75f"
+            xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            x:Class="EnvShare.Views.Home.HomePage">
+
+    <!-- Notifications Tab -->
+    <ContentPage Title="Notifications">
+        <ContentPage.IconImageSource>
+            <FontImageSource FontFamily="FontSolid" Glyph="&#xf0f3;" Size="20" />
+        </ContentPage.IconImageSource>
+        <!-- Content for Notifications tab-->
+    </ContentPage>
+
+    <!-- Chats Tab -->
+    <ContentPage Title="Chats" >
+        <ContentPage.IconImageSource>
+            <FontImageSource FontFamily="FontSolid" Glyph="&#xf4ad;" Size="20" />
+        </ContentPage.IconImageSource>
+        <local:DMChat/>
+    </ContentPage>
+
+    <!-- Feed Tab -->
+    <ContentPage Title="Feed">
+        <ContentPage.IconImageSource>
+            <FontImageSource FontFamily="FontSolid" Glyph="&#xe592;" Size="20" />
+        </ContentPage.IconImageSource>
+        <StackLayout>
+            <ListView x:Name="PostsListView">
+                <!-- ListView content -->
+            </ListView>
+        </StackLayout>
+    </ContentPage>
+
+    <!-- Discover Tab -->
+    <ContentPage Title="Discover">
+        <ContentPage.IconImageSource>
+            <FontImageSource FontFamily="FontSolid" Glyph="&#xf14e;" Size="20" />
+        </ContentPage.IconImageSource>
+        <!-- Content for Discover tab -->
+    </ContentPage>
+
+</TabbedPage>

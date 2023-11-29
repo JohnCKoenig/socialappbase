@@ -1,0 +1,7 @@
+EnvShare/.vs/
+MobileAppAPI/.vs/
+MobileAppAPI/MobileAppAPI/bin
+EnvShare/EnvShare/bin
+EnvShare/EnvShare/obj
+MobileAppAPI/MobileAppAPI/obj
+MobileAppAPI/MobileAppAPI/appsettings.json
