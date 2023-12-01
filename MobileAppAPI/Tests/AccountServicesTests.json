@@ -1,0 +1,481 @@
+{
+	"info": {
+		"_postman_id": "fc68900d-b804-4d64-b060-c32d0f942364",
+		"name": "MobileAppTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AccountServices",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify succesful user registration\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData).to.have.property('code', 0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should not indicate failure\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    // Failure cases\r",
+									"    pm.expect(jsonData.code).to.not.eql(1);\r",
+									"    pm.expect(pm.response.code).to.not.be.oneOf([400, 401, 403, 404, 500]); // \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"random_username\", pm.variables.replaceIn(\"{{$randomUserName}}\"));\r",
+									"pm.environment.set(\"random_password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));\r",
+									"pm.environment.set(\"random_email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));\r",
+									"pm.environment.set(\"random_phoneNumber\", pm.variables.replaceIn(\"{{$randomPhoneNumber}}\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "name",
+								"value": "John Koenig",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "koenigjohn77@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "password",
+								"value": "test",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "phoneNumber",
+								"value": "12345",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{random_username}}\",\r\n  \"email\": \"{{random_email}}\",\r\n  \"password\": \"{{random_password}}\",\r\n  \"phoneNumber\": \"{{random_phoneNumber}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.0.124:26046/accounts/register",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"124"
+							],
+							"port": "26046",
+							"path": [
+								"accounts",
+								"register"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "John Koenig",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "koenigjohn77@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "test",
+									"disabled": true
+								},
+								{
+									"key": "phoneNumber",
+									"value": "2083578773",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign  In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in and save tokens\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    // Validate the presence of tokens in the response\r",
+									"    pm.expect(jsonData).to.have.property('accessToken');\r",
+									"    pm.expect(jsonData).to.have.property('refreshToken');\r",
+									"\r",
+									"    // Save the tokens for later use in other tests\r",
+									"    pm.environment.set(\"access_token\", jsonData.accessToken);\r",
+									"    pm.environment.set(\"refresh_token\", jsonData.refreshToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{random_username}}\",\r\n  \"password\": \"{{random_password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.0.124:26046/accounts/signin",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"124"
+							],
+							"port": "26046",
+							"path": [
+								"accounts",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get new access and refresh token\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    // Validate the presence of tokens in the response\r",
+									"    pm.expect(jsonData).to.have.property('accessToken');\r",
+									"    pm.expect(jsonData).to.have.property('refreshToken');\r",
+									"\r",
+									"    // Save the tokens for later use in other tests\r",
+									"    pm.environment.set(\"access_token\", jsonData.accessToken);\r",
+									"    pm.environment.set(\"refresh_token\", jsonData.refreshToken);\r",
+									"});\r",
+									"pm.test(\"Response should not indicate failure\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    // Failure cases\r",
+									"    pm.expect(jsonData.code).to.not.eql(1);\r",
+									"    pm.expect(pm.response.code).to.not.be.oneOf([400, 401, 403, 404, 500]); // \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"{{refresh_token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.0.124:26046/accounts/refreshtoken",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"124"
+							],
+							"port": "26046",
+							"path": [
+								"accounts",
+								"refreshtoken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User exists and information returned\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    // Validate the presence of tokens in the response\r",
+									"    pm.expect(jsonData).to.have.property('username');\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData).to.have.property('phonenumber');\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Response should not indicate failure\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    // Failure cases\r",
+									"    pm.expect(jsonData.code).to.not.eql(1);\r",
+									"    pm.expect(pm.response.code).to.not.be.oneOf([400, 401, 403, 404, 500]); // \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.0.124:26046/accounts/getuser",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"124"
+							],
+							"port": "26046",
+							"path": [
+								"accounts",
+								"getuser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify succesful user update\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData).to.have.property('code', 0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should not indicate failure\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    // Failure cases\r",
+									"    pm.expect(jsonData.code).to.not.eql(1);\r",
+									"    pm.expect(pm.response.code).to.not.be.oneOf([400, 401, 403, 404, 500]); // \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{$randomUserName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"phone_number\": \"{{$randomPhoneNumber}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.0.124:26046/accounts/updateuser",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"124"
+							],
+							"port": "26046",
+							"path": [
+								"accounts",
+								"updateuser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Succesful user deletion\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    // Validate the presence of tokens in the response\r",
+									"    pm.expect(jsonData).to.have.property('code',0);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Response should not indicate failure\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    // Failure cases\r",
+									"    pm.expect(jsonData.code).to.not.eql(1);\r",
+									"    pm.expect(pm.response.code).to.not.be.oneOf([400, 401, 403, 404, 500]); // \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.0.124:26046/accounts/deleteuser",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"124"
+							],
+							"port": "26046",
+							"path": [
+								"accounts",
+								"deleteuser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EndpointTesting",
+			"item": [
+				{
+					"name": "Test",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0OCIsInVuaXF1ZV9uYW1lIjoiZWxlbWVudDExNiIsImp0aSI6ImJlYjFjNzYyLTQ5MzItNGY1OS04ZTUxLTU5NjMyNjNmNmRkZCIsIm5iZiI6MTcwMDQ2MTQ0NCwiZXhwIjoxNzAwNDY1MDQ0LCJpYXQiOjE3MDA0NjE0NDR9.jftgtxQnF_hlz9z15xAtRdNTtqt_1vapzq6VekDoi5A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0OCIsInVuaXF1ZV9uYW1lIjoiZWxlbWVudDExNiIsImp0aSI6ImJlYjFjNzYyLTQ5MzItNGY1OS04ZTUxLTU5NjMyNjNmNmRkZCIsIm5iZiI6MTcwMDQ2MTQ0NCwiZXhwIjoxNzAwNDY1MDQ0LCJpYXQiOjE3MDA0NjE0NDR9.jftgtxQnF_hlz9z15xAtRdNTtqt_1vapzq6VekDoi5A\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.0.124:26046/accounts/getuser",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"124"
+							],
+							"port": "26046",
+							"path": [
+								"accounts",
+								"getuser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
