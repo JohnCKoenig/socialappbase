@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MobileAppAPI.Services.Security;
-using MobileAppAPI.RTS.DB;
 
 namespace MobileAppAPI.Controllers.Accounts
 {
