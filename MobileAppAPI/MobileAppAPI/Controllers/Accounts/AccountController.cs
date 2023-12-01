@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MobileAppAPI.Services.Security;
+using MobileAppAPI.RTS.DB;
 
 namespace MobileAppAPI.Controllers.Accounts
 {
@@ -91,12 +92,8 @@ namespace MobileAppAPI.Controllers.Accounts
             if (claimsIdentity != null)
             {
                 AccountService actsrv = new AccountService(_context, _configuration);
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                if (userId != null)
-                {
-                    response = await actsrv.DeleteUser(userId.ToString());
-                }
-
+                var userId = Guid.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
+                response = await actsrv.DeleteUser(userId);
             }
             if (!(response.Code == ResponseCode.Failure))
             {
@@ -122,11 +119,8 @@ namespace MobileAppAPI.Controllers.Accounts
             if (claimsIdentity != null)
             {
                 AccountService actsrv = new AccountService(_context, _configuration);
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                if (userId != null)
-                {
-                    response = await actsrv.GetUser(userId.ToString());
-                }
+                var userId = Guid.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
+                response = await actsrv.GetUser(userId);
 
             }
             if (response.username!=null)
@@ -153,12 +147,8 @@ namespace MobileAppAPI.Controllers.Accounts
             if (claimsIdentity != null)
             {
                 AccountService actsrv = new AccountService(_context, _configuration);
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                if (userId != null)
-                {
-                    response = await actsrv.UpdateUser(model,userId.ToString());
-                }
-
+                var userId = Guid.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
+                response = await actsrv.UpdateUser(model, userId);
             }
             if (!(response.Code == ResponseCode.Failure))
             {
@@ -212,7 +202,7 @@ namespace MobileAppAPI.Controllers.Accounts
         [HttpPost("InvalidateToken")]
         public async Task<IActionResult> InvalidateToken([FromBody] RefreshAccessTokenModel refreshTokenModel)
         {
-            RedisService rs = new RedisService("localhost:6379,password=!Password123");
+            RedisService rs = new RedisService(_configuration);
             await rs.InvalidateSessionAsync(refreshTokenModel.refreshToken);
             return Ok("test");
         }

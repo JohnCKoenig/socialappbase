@@ -8,20 +8,23 @@ using MobileAppAPI.Services.Security;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-string? redisConnString = "localhost:6379,password=!Password123";
+
 
 // Add services to the container.
 builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
-builder.Services.AddSingleton<RedisService>(sp => new RedisService(redisConnString));
+//Create configuration
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
 
 // JWT Authentication Configuration
-var key = Encoding.ASCII.GetBytes("6TbhRAKWj++f8unf1eCGmsgMel+1mxvJnqMnFhrtlrs="); 
+var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]); 
 
+//Add JWT authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,12 +43,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Database Context Configuration
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .Build();
+//Configure redis service
+builder.Services.AddSingleton<RedisService>(sp => new RedisService(configuration));
 
+// Database Context Configuration
 string? connectionString = configuration.GetConnectionString("LocalDB");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));

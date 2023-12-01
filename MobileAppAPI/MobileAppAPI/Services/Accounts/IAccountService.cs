@@ -19,21 +19,21 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="user">The user to update</param>
         /// <returns>A response idndicating whether user update was succesful</returns>
-        Task<GeneralResponseModel> UpdateUser(UpdateUserModel user, string userid);
+        Task<GeneralResponseModel> UpdateUser(UpdateUserModel user, Guid userid);
 
         /// <summary>
         /// Deletes a user from the service
         /// </summary>
         /// <param name="user">The user to delete</param>
         /// <returns>A response indicating whether delete was succesful</returns>
-        Task<GeneralResponseModel> DeleteUser(string userid);
+        Task<GeneralResponseModel> DeleteUser(Guid userid);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<UserResponseModel> GetUser (string userid);
+        Task<UserResponseModel> GetUser (Guid userid);
 
         /// <summary>
         /// Authenticates a user on the service

@@ -104,18 +104,18 @@ namespace MobileAppAPI.Services.Accounts
         /// <param name="user">The user to update</param>
         /// <param name="userid">the id of the user to update</param>
         /// <returns>A response indicating whether the user was updated successfully</returns>
-        public async Task<GeneralResponseModel> UpdateUser(UpdateUserModel user,string userid)
+        public async Task<GeneralResponseModel> UpdateUser(UpdateUserModel user,Guid userid)
         {
             // Check for existing email or username
-            var emailCheck = await _context.Users.AnyAsync(u => u.email == user.email && u.userid!= Convert.ToInt32(userid));
-            var usernameCheck = await _context.Users.AnyAsync(u => u.username == user.username && u.userid != Convert.ToInt32(userid));
+            var emailCheck = await _context.Users.AnyAsync(u => u.email == user.email && u.userid != userid);
+            var usernameCheck = await _context.Users.AnyAsync(u => u.username == user.username && u.userid !=userid);
             if (emailCheck || usernameCheck)
             {
                 return new GeneralResponseModel(ResponseCode.UserAlreadyExists, "User already exists with this email or username");
             }
 
             // Find the user by ID
-            var selectedUser = await _context.Users.FindAsync(Convert.ToInt32(userid));
+            var selectedUser = await _context.Users.FindAsync(userid);
             if (selectedUser == null)
             {
                 return new GeneralResponseModel(ResponseCode.Failure, "No user found");
@@ -144,10 +144,10 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="userid">the id of the user to remove</param>
         /// <returns>A response indicating whether the user was removed succesfully</returns>
-        public async Task<GeneralResponseModel> DeleteUser(string userid)
+        public async Task<GeneralResponseModel> DeleteUser(Guid userid)
         {
             // Find the user by ID
-            var selectedUser = await _context.Users.FindAsync(Convert.ToInt32(userid));
+            var selectedUser = await _context.Users.FindAsync(userid);
             if (selectedUser == null)
             {
                 return new GeneralResponseModel(ResponseCode.Failure, "No user found");
@@ -170,10 +170,10 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="user">The userid of the user to retrieve</param>
         /// <returns>A model containing the user information visible</returns>
-        public async Task<UserResponseModel> GetUser(string userid)
+        public async Task<UserResponseModel> GetUser(Guid userid)
         {
             // Find the user by ID
-            var selectedUser = await _context.Users.FindAsync(Convert.ToInt32(userid));
+            var selectedUser = await _context.Users.FindAsync(userid);
             if (selectedUser == null)
             {
                 return new UserResponseModel();
@@ -215,7 +215,7 @@ namespace MobileAppAPI.Services.Accounts
            
             
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            RedisService rs = new RedisService("localhost:6379,password=!Password123");
+            RedisService rs = new RedisService(_configuration);
             await rs.SetSessionAsync(tokenHandler.WriteToken(token),user.userid.ToString(),TimeSpan.FromHours(SecurityConstants.ACCESS_TOKEN_EXPIRY));
             TokenResponseModel trm = new TokenResponseModel
             { 

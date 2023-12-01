@@ -8,8 +8,10 @@ namespace MobileAppAPI.Services.Security
         private readonly ConnectionMultiplexer _redis;
         private readonly StackExchange.Redis.IDatabase _db;
 
-        public RedisService(string connectionString)
+        public RedisService(IConfiguration configuration)
         {
+           
+            string connectionString = configuration["RedisConnection:LocalDB"];
             _redis = ConnectionMultiplexer.Connect(connectionString);
             _db = _redis.GetDatabase();
         }
