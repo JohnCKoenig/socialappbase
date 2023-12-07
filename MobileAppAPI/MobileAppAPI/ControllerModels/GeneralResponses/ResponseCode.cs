@@ -13,5 +13,11 @@
         /// </summary>
         UserAlreadyExists, //a user with that email already exists
         InvalidCredentials, //no user exists with those credentials
+
+        ///<summary>
+        ///Chat Codes
+        ///</summary>
+        RecipientDoesNotExist,
+        ReflectiveChat,
     }
 }

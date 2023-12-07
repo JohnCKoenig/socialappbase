@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MobileAppAPI.DBModels.Accounts;
+using MobileAppAPI.DBModels.Chat;
 using MobileAppAPI.DBModels.Content;
 
 namespace MobileAppAPI.DBModels
@@ -9,6 +10,8 @@ namespace MobileAppAPI.DBModels
         public DbSet<UserModel> Users { get; set; }
         public DbSet<PostModel> Posts { get; set; }
         public DbSet<RefreshTokenModel> RefreshTokens { get; set; }
+        public DbSet<ChatSessionModel> ChatSessions { get; set; }
+        public DbSet<ParticipantModel> Participants { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -1,7 +1,9 @@
-EnvShare/.vs/
-MobileAppAPI/.vs/
+MobileApp/.vs
+MobileApp/MobileApp/.vs
+MobileAppAPI/.vs
 MobileAppAPI/MobileAppAPI/bin
 MobileApp/MobileApp/bin
 MobileApp/MobileApp/obj
 MobileAppAPI/MobileAppAPI/obj
 MobileAppAPI/MobileAppAPI/appsettings.json
+MobileApp/.vs/MobileApp/v17/.suo

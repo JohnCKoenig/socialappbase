@@ -34,4 +34,9 @@
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ControllerModels\Chat\Response\" />
+    <Folder Include="RTS\DB\" />
+  </ItemGroup>
+
 </Project>
