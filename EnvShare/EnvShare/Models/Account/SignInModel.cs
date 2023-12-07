@@ -1,4 +1,4 @@
-﻿namespace EnvShare.Models.Account
+﻿namespace MobileApp.Models.Account
 {
     public class SignInModel
     {

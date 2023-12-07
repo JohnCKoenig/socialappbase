@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace EnvShare;
+namespace MobileApp;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

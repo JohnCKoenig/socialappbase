@@ -1,4 +1,4 @@
-﻿namespace EnvShare.Views.SignIn;
+﻿namespace MobileApp.Views.SignIn;
 
 
 public partial class MainPage : ContentPage

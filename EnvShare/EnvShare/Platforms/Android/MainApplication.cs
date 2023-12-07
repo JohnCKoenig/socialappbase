@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace EnvShare;
+namespace MobileApp;
 
 #if DEBUG                                  
 [Application(UsesCleartextTraffic = true)]  

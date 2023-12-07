@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace EnvShare;
+namespace MobileApp;
 
 public static class MauiProgram
 {

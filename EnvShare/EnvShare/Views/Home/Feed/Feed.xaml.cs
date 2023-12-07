@@ -1,12 +1,12 @@
 using System.Collections.ObjectModel;
-using EnvShare.Models;
+using MobileApp.Models;
 using Microsoft.Maui.Controls;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
-using EnvShare.API.Posts;
+using MobileApp.API.Posts;
 
-namespace EnvShare;
+namespace MobileApp;
 
 public partial class Feed : ContentPage
 {

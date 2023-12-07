@@ -1,4 +1,4 @@
-﻿using EnvShare.Models;
+﻿using MobileApp.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnvShare.API.Posts
+namespace MobileApp.API.Posts
 {
     internal class PostService
     {

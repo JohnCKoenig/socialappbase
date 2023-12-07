@@ -1,9 +1,9 @@
-﻿using EnvShare.API.Account;
-using EnvShare.DeviceStore.Authentication;
+﻿using MobileApp.API.Account;
+using MobileApp.DeviceStore.Authentication;
 using System.IdentityModel.Tokens.Jwt;
-using EnvShare.Views.SignIn;
+using MobileApp.Views.SignIn;
 
-namespace EnvShare;
+namespace MobileApp;
 
 public partial class App : Application
 {

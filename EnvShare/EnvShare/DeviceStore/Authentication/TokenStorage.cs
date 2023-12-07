@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Maui.Storage;
 
 
-namespace EnvShare.DeviceStore.Authentication
+namespace MobileApp.DeviceStore.Authentication
 {
     internal class TokenStorage
     {

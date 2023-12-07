@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:local="clr-namespace:EnvShare.Views.Home.Chat"
+            xmlns:local="clr-namespace:MobileApp.Views.Home.Chat"
             SelectedTabColor="#04c75f"
             UnselectedTabColor="DarkGray"
             BarBackgroundColor="Black"
             BarTextColor="#04c75f"
             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
             android:TabbedPage.ToolbarPlacement="Bottom"
-            x:Class="EnvShare.Views.Home.HomePage">
+            x:Class="MobileApp.Views.Home.HomePage">
 
     <!-- Notifications Tab -->
     <ContentPage Title="Notifications">

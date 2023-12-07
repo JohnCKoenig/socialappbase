@@ -1,11 +1,11 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.AspNetCore.SignalR.Client;
-using EnvShare.Models.Chat;
+using MobileApp.Models.Chat;
 using System.Windows.Input;
-using EnvShare.DeviceStore.Authentication;
-using EnvShare.API;
-namespace EnvShare.Views.Home.Chat;
+using MobileApp.DeviceStore.Authentication;
+using MobileApp.API;
+namespace MobileApp.Views.Home.Chat;
 
 public partial class DMChat : ContentView, INotifyPropertyChanged
 {

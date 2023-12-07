@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnvShare.API.Account
+namespace MobileApp.API.Account
 {
     internal interface ISignInService
     {

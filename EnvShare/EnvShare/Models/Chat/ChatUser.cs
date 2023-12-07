@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnvShare.Models.Chat
+namespace MobileApp.Models.Chat
 {
     public class ChatUser
     {

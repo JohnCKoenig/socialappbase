@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EnvShare.Models.Account;
+using MobileApp.Models.Account;
 
-namespace EnvShare.API.Account
+namespace MobileApp.API.Account
 {
     internal class SignInService : ISignInService
     {

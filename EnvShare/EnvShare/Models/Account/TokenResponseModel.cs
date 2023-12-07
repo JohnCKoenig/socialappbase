@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnvShare.Models.Account
+namespace MobileApp.Models.Account
 {
     internal class TokenResponseModel
     {

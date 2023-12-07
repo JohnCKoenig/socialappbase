@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnvShare.API.Posts
+namespace MobileApp.API.Posts
 {
     internal interface IPostService
     {

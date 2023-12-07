@@ -5,7 +5,7 @@ using System.Text;
 
 
 
-namespace EnvShare.Views.SignIn;
+namespace MobileApp.Views.SignIn;
 
 public partial class Register : ContentPage
 {

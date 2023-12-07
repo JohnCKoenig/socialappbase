@@ -1,8 +1,8 @@
-using EnvShare.API.Account;
-using EnvShare.DeviceStore.Authentication;
-using EnvShare.Views.Home;
+using MobileApp.API.Account;
+using MobileApp.DeviceStore.Authentication;
+using MobileApp.Views.Home;
 
-namespace EnvShare.Views.SignIn;
+namespace MobileApp.Views.SignIn;
 
 public partial class SignIn : ContentPage
 {

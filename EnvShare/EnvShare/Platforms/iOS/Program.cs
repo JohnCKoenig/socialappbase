@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace EnvShare;
+namespace MobileApp;
 
 public class Program
 {

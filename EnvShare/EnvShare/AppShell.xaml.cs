@@ -1,4 +1,4 @@
-﻿namespace EnvShare;
+﻿namespace MobileApp;
 
 public partial class AppShell : Shell
 {
