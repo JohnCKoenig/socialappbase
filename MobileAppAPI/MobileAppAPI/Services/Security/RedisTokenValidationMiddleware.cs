@@ -3,7 +3,7 @@
     public class RedisTokenValidationMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly RedisService _redisService; 
+        private readonly RedisService _redisService;
 
         public RedisTokenValidationMiddleware(RequestDelegate next, RedisService redisService)
         {

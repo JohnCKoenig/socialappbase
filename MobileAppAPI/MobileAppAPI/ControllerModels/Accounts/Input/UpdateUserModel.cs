@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MobileAppAPI.ControllerModels.Accounts.Input
+﻿namespace MobileAppAPI.ControllerModels.Accounts.Input
 {
     public class UpdateUserModel
     {

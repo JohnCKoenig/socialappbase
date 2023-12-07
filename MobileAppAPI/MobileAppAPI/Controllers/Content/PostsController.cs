@@ -1,20 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Hosting;
-using MobileAppAPI.DBModels;
-using static System.Net.Mime.MediaTypeNames;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Numerics;
-using System.Reflection.Metadata;
-using System.Reflection;
-using System;
-using MobileAppAPI.ControllerModels;
-using Microsoft.AspNetCore.Authorization;
-using MobileAppAPI.DBModels.Content;
-using MobileAppAPI.ControllerModels.Content.Input;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MobileAppAPI.ControllerModels.Content.Response;
+using MobileAppAPI.DBModels;
 
 namespace MobileAppAPI.Controllers.Content
 {

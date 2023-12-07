@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 using System.IdentityModel.Tokens.Jwt;
 namespace MobileAppAPI.Services.Security
 {
@@ -10,7 +9,7 @@ namespace MobileAppAPI.Services.Security
 
         public RedisService(IConfiguration configuration)
         {
-           
+
             string connectionString = configuration["RedisConnection:LocalDB"];
             _redis = ConnectionMultiplexer.Connect(connectionString);
             _db = _redis.GetDatabase();
@@ -36,7 +35,7 @@ namespace MobileAppAPI.Services.Security
             var sessions = new List<string>();
             foreach (var sessionId in sessionIds)
             {
-              
+
                 sessions.Add(sessionId.ToString());
             }
 

@@ -33,7 +33,7 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<UserResponseModel> GetUser (Guid userid);
+        Task<UserResponseModel> GetUser(Guid userid);
 
         /// <summary>
         /// Authenticates a user on the service
@@ -47,7 +47,7 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="user">The user to generate a JWT token for</param>
         /// <returns>A token response</returns>
-       Task<TokenResponseModel> GenerateAccessToken(UserModel user);
+        Task<TokenResponseModel> GenerateAccessToken(UserModel user);
 
         /// <summary>
         /// Generates a refresh token for a user

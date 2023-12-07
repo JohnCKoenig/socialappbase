@@ -1,17 +1,15 @@
-﻿using MobileAppAPI.DBModels.Accounts;
-using MobileAppAPI.DBModels;
-using MobileAppAPI.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MobileAppAPI.ControllerModels.Accounts.Input;
+using MobileAppAPI.ControllerModels.Accounts.Response;
+using MobileAppAPI.ControllerModels.GeneralResponses;
+using MobileAppAPI.DBModels;
+using MobileAppAPI.DBModels.Accounts;
+using MobileAppAPI.Helpers;
+using MobileAppAPI.Services.Security;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
-using MobileAppAPI.ControllerModels;
-using MobileAppAPI.ControllerModels.Accounts.Response;
-using MobileAppAPI.ControllerModels.Accounts.Input;
-using MobileAppAPI.ControllerModels.GeneralResponses;
-using Microsoft.AspNetCore.Identity;
-using MobileAppAPI.Services.Security;
 
 namespace MobileAppAPI.Services.Accounts
 {
@@ -104,11 +102,11 @@ namespace MobileAppAPI.Services.Accounts
         /// <param name="user">The user to update</param>
         /// <param name="userid">the id of the user to update</param>
         /// <returns>A response indicating whether the user was updated successfully</returns>
-        public async Task<GeneralResponseModel> UpdateUser(UpdateUserModel user,Guid userid)
+        public async Task<GeneralResponseModel> UpdateUser(UpdateUserModel user, Guid userid)
         {
             // Check for existing email or username
             var emailCheck = await _context.Users.AnyAsync(u => u.email == user.email && u.userid != userid);
-            var usernameCheck = await _context.Users.AnyAsync(u => u.username == user.username && u.userid !=userid);
+            var usernameCheck = await _context.Users.AnyAsync(u => u.username == user.username && u.userid != userid);
             if (emailCheck || usernameCheck)
             {
                 return new GeneralResponseModel(ResponseCode.UserAlreadyExists, "User already exists with this email or username");
@@ -212,16 +210,16 @@ namespace MobileAppAPI.Services.Accounts
                 Expires = DateTime.UtcNow.AddHours(SecurityConstants.ACCESS_TOKEN_EXPIRY),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
-           
-            
+
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
             RedisService rs = new RedisService(_configuration);
-            await rs.SetSessionAsync(tokenHandler.WriteToken(token),user.userid.ToString(),TimeSpan.FromHours(SecurityConstants.ACCESS_TOKEN_EXPIRY));
+            await rs.SetSessionAsync(tokenHandler.WriteToken(token), user.userid.ToString(), TimeSpan.FromHours(SecurityConstants.ACCESS_TOKEN_EXPIRY));
             TokenResponseModel trm = new TokenResponseModel
-            { 
-                AccessToken=tokenHandler.WriteToken(token),
-                AccessTokenExpiry=tokenDescriptor.Expires.ToString()
-            }; 
+            {
+                AccessToken = tokenHandler.WriteToken(token),
+                AccessTokenExpiry = tokenDescriptor.Expires.ToString()
+            };
             return trm;
         }
         /// <summary>
@@ -246,8 +244,8 @@ namespace MobileAppAPI.Services.Accounts
             var token = tokenHandler.CreateToken(tokenDescriptor);
             TokenResponseModel trm = new TokenResponseModel
             {
-              RefreshToken= tokenHandler.WriteToken(token),
-              RefreshTokenExpiry= tokenDescriptor.Expires.ToString()
+                RefreshToken = tokenHandler.WriteToken(token),
+                RefreshTokenExpiry = tokenDescriptor.Expires.ToString()
             };
 
             return trm;

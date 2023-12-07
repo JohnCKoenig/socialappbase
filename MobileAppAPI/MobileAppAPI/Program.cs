@@ -22,7 +22,7 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 // JWT Authentication Configuration
-var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]); 
+var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
 
 //Add JWT authentication
 builder.Services.AddAuthentication(options =>

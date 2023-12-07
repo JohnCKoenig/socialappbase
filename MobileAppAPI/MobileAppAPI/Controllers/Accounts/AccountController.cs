@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MobileAppAPI.ControllerModels;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MobileAppAPI.ControllerModels.Accounts.Input;
 using MobileAppAPI.ControllerModels.Accounts.Response;
+using MobileAppAPI.ControllerModels.GeneralResponses;
 using MobileAppAPI.DBModels;
 using MobileAppAPI.DBModels.Accounts;
-using MobileAppAPI.Helpers;
 using MobileAppAPI.Services.Accounts;
-using MobileAppAPI.ControllerModels.GeneralResponses;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using MobileAppAPI.Services.Security;
+using System.Security.Claims;
 
 namespace MobileAppAPI.Controllers.Accounts
 {
@@ -122,7 +119,7 @@ namespace MobileAppAPI.Controllers.Accounts
                 response = await actsrv.GetUser(userId);
 
             }
-            if (response.username!=null)
+            if (response.username != null)
             {
                 return Ok(response);
             }
@@ -207,5 +204,5 @@ namespace MobileAppAPI.Controllers.Accounts
         }
     }
 
-   
+
 }

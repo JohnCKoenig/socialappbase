@@ -1,10 +1,5 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using MobileAppAPI.Services.Accounts;
-using System.Security.Claims;
 
 namespace MobileAppAPI.RTS.Chat
 {
@@ -18,6 +13,7 @@ namespace MobileAppAPI.RTS.Chat
         }
         public override async Task OnConnectedAsync()
         {
+
             var userIdClaim = Context.User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             var userid = userIdClaim?.Value;
 

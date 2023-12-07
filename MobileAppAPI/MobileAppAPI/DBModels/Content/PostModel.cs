@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MobileAppAPI.DBModels.Accounts;
+﻿using MobileAppAPI.DBModels.Accounts;
 using System.ComponentModel.DataAnnotations;
 
 namespace MobileAppAPI.DBModels.Content
