@@ -1,4 +1,5 @@
-﻿using MobileAppAPI.ControllerModels.Accounts.Input;
+﻿using MobileAppAPI.ControllerModels;
+using MobileAppAPI.ControllerModels.Accounts.Input;
 using MobileAppAPI.ControllerModels.Accounts.Response;
 using MobileAppAPI.ControllerModels.GeneralResponses;
 using MobileAppAPI.DBModels.Accounts;
@@ -12,35 +13,35 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="user">The information of the user to create</param>
         /// <returns>A response indicating whether user creation was succesful</returns>
-        Task<GeneralResponseModel> CreateUser(RegistrationModel user);
+        Task<GeneralResponseModel<object>> CreateUser(RegistrationModel user);
 
         /// <summary>
         /// Updates a user's profile details
         /// </summary>
         /// <param name="user">The user to update</param>
         /// <returns>A response idndicating whether user update was succesful</returns>
-        Task<GeneralResponseModel> UpdateUser(UpdateUserModel user, Guid userid);
+        Task<GeneralResponseModel<object>> UpdateUser(UpdateUserModel user, Guid userid);
 
         /// <summary>
         /// Deletes a user from the service
         /// </summary>
         /// <param name="user">The user to delete</param>
         /// <returns>A response indicating whether delete was succesful</returns>
-        Task<GeneralResponseModel> DeleteUser(Guid userid);
+        Task<GeneralResponseModel<object>> DeleteUser(Guid userid);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<UserResponseModel> GetUser(Guid userid);
+        Task<GeneralResponseModel<UserResponseModel>> GetUser(Guid userid);
 
         /// <summary>
         /// Authenticates a user on the service
         /// </summary>
         /// <param name="user">The username and password to authenticate</param>
         /// <returns>A response containing refresh/access token</returns>
-        Task<TokenResponseModel> Authenticate(SignInModel user);
+        Task<GeneralResponseModel<object>> Authenticate(SignInModel user);
 
         /// <summary>
         /// Creates a new JWT token for a user
@@ -68,7 +69,7 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="refreshToken">Refresh token</param>
         /// <returns>A User object, or null if no matches</returns>
-        Task<UserModel> GetUserByRefreshToken(string refreshToken);
+        Task<GeneralResponseModel<UserModel>> GetUserByRefreshToken(string refreshToken);
 
         /// <summary>
         /// Updates a users refresh token, or generates a new one if there is none

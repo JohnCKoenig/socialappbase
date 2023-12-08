@@ -33,7 +33,7 @@ namespace MobileAppAPI.Controllers.Accounts
             //Check if user filled out correct data
             if (!ModelState.IsValid)
             {
-                return BadRequest(new GeneralResponseModel(ResponseCode.Failure, "Invalid request"));
+                return BadRequest(GeneralResponseModel<object>.ErrorResponse("Invalid request"));
             }
             AccountService actsrv = new AccountService(_context, _configuration);
             var response = await actsrv.CreateUser(model);
@@ -55,7 +55,7 @@ namespace MobileAppAPI.Controllers.Accounts
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new GeneralResponseModel(ResponseCode.Failure, "Invalid request"));
+                return BadRequest(GeneralResponseModel<object>.ErrorResponse("Invalid request"));
             }
             //Create an accountservice with the config
             AccountService actsrv = new AccountService(_context, _configuration);
@@ -63,12 +63,11 @@ namespace MobileAppAPI.Controllers.Accounts
             //try authenticating with provided details
             var response = await actsrv.Authenticate(model);
 
-            //if we didn't get an acccess token, the account doens't exist
-            if (!(response.AccessToken == null))
+            if (response.Code == ResponseCode.Success)
             {
                 return Ok(response);
             }
-            return Unauthorized(new GeneralResponseModel(ResponseCode.InvalidCredentials, "User does not exist"));
+            return Unauthorized(response);
 
         }
         /// <summary>
@@ -81,9 +80,9 @@ namespace MobileAppAPI.Controllers.Accounts
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new GeneralResponseModel(ResponseCode.Failure, "Invalid request"));
+                return BadRequest(GeneralResponseModel<object>.ErrorResponse("Invalid request"));
             }
-            var response = new GeneralResponseModel(ResponseCode.Failure, "Delete operation failed");
+            var response = GeneralResponseModel<object>.ErrorResponse("Delete operation failed");
             var claimsIdentity = User.Identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
@@ -91,7 +90,7 @@ namespace MobileAppAPI.Controllers.Accounts
                 var userId = Guid.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
                 response = await actsrv.DeleteUser(userId);
             }
-            if (!(response.Code == ResponseCode.Failure))
+            if (response.Code == ResponseCode.Success)
             {
                 return Ok(response);
             }
@@ -108,9 +107,9 @@ namespace MobileAppAPI.Controllers.Accounts
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new GeneralResponseModel(ResponseCode.Failure, "Invalid request"));
+                return BadRequest(GeneralResponseModel<object>.ErrorResponse("Invalid request"));
             }
-            UserResponseModel response = new UserResponseModel();
+            var response = GeneralResponseModel<UserResponseModel>.ErrorResponse("This user does not exist");
             var claimsIdentity = User.Identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
@@ -119,11 +118,11 @@ namespace MobileAppAPI.Controllers.Accounts
                 response = await actsrv.GetUser(userId);
 
             }
-            if (response.username != null)
+            if (response.Code == ResponseCode.Success)
             {
                 return Ok(response);
             }
-            return BadRequest(new GeneralResponseModel(ResponseCode.Failure, "This user does not exist"));
+            return BadRequest(response);
         }
 
         /// <summary>
@@ -136,9 +135,9 @@ namespace MobileAppAPI.Controllers.Accounts
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new GeneralResponseModel(ResponseCode.Failure, "Invalid request"));
+                return BadRequest(GeneralResponseModel<object>.ErrorResponse("Invalid request"));
             }
-            var response = new GeneralResponseModel(ResponseCode.Failure, "Update operation failed");
+            var response = GeneralResponseModel<object>.ErrorResponse("Update operation failed.");
             var claimsIdentity = User.Identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
@@ -163,14 +162,15 @@ namespace MobileAppAPI.Controllers.Accounts
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new GeneralResponseModel(ResponseCode.Failure, "Invalid request"));
+                return BadRequest(GeneralResponseModel<object>.ErrorResponse("Invalid request"));
             }
             AccountService actsrv = new AccountService(_context, _configuration);
 
             // Validate refresh token
             if (await actsrv.ValidateRefreshToken(refreshTokenModel.refreshToken))
             {
-                UserModel user = await actsrv.GetUserByRefreshToken(refreshTokenModel.refreshToken);
+                var response = await actsrv.GetUserByRefreshToken(refreshTokenModel.refreshToken);
+                var user = response.Data;
 
                 if (user != null)
                 {
@@ -189,11 +189,11 @@ namespace MobileAppAPI.Controllers.Accounts
 
                     };
 
-                    return Ok(tokenResponse);
+                    return Ok(GeneralResponseModel<object>.SuccessResponse(tokenResponse));
                 }
             }
 
-            return BadRequest(new GeneralResponseModel(ResponseCode.Failure, "Invalid refresh token"));
+            return BadRequest(GeneralResponseModel<object>.ErrorResponse("Invalid refresht oken"));
         }
         [HttpPost("InvalidateToken")]
         public async Task<IActionResult> InvalidateToken([FromBody] RefreshAccessTokenModel refreshTokenModel)

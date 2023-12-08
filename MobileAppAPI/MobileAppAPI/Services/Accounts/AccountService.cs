@@ -30,7 +30,7 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="user">The username and password to authenticate</param>
         /// <returns>A response containing refresh/access token</returns>
-        public async Task<TokenResponseModel> Authenticate(SignInModel model)
+        public async Task<GeneralResponseModel<object>> Authenticate(SignInModel model)
         {
 
             // Find the user by username (or email, whichever they are using)
@@ -39,7 +39,7 @@ namespace MobileAppAPI.Services.Accounts
             // If the user is not found or the password doesn't match, return unauthorized
             if (user == null || !PasswordHelper.VerifyPassword(model.Password, user.password_hash))
             {
-                return new TokenResponseModel();
+                return GeneralResponseModel<object>.ErrorResponse("No account found");
             }
 
             // User is authenticated, generate an access token and a refresh token
@@ -64,20 +64,20 @@ namespace MobileAppAPI.Services.Accounts
                 RefreshToken = refreshToken.RefreshToken,
                 RefreshTokenExpiry = refreshToken.RefreshTokenExpiry,
             };
-            return response;
+            return GeneralResponseModel<object>.SuccessResponse(response);
         }
         /// <summary>
         /// Registers a new user on the service
         /// </summary>
         /// <param name="user">The new users information</param>
         /// <returns>A response indicating whether creation was succesful</returns>
-        public async Task<GeneralResponseModel> CreateUser(RegistrationModel user)
+        public async Task<GeneralResponseModel<object>> CreateUser(RegistrationModel user)
         {
             var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.email == user.Email);
             if (existingUser != null)
             {
                 // User with this email already exists, handle accordingly
-                return new GeneralResponseModel(ResponseCode.UserAlreadyExists, "The user specified already exists");
+                return GeneralResponseModel<object>.ErrorResponse(ResponseCode.UserAlreadyExists, "A user with these details already exists.");
             }
             // Hash the password
             string hashedPassword = PasswordHelper.HashPassword(user.Password);
@@ -93,7 +93,7 @@ namespace MobileAppAPI.Services.Accounts
 
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
-            return new GeneralResponseModel(ResponseCode.Success, "New account registered");
+            return GeneralResponseModel<object>.SuccessResponse();
         }
 
         /// <summary>
@@ -102,21 +102,21 @@ namespace MobileAppAPI.Services.Accounts
         /// <param name="user">The user to update</param>
         /// <param name="userid">the id of the user to update</param>
         /// <returns>A response indicating whether the user was updated successfully</returns>
-        public async Task<GeneralResponseModel> UpdateUser(UpdateUserModel user, Guid userid)
+        public async Task<GeneralResponseModel<object>> UpdateUser(UpdateUserModel user, Guid userid)
         {
             // Check for existing email or username
             var emailCheck = await _context.Users.AnyAsync(u => u.email == user.email && u.userid != userid);
             var usernameCheck = await _context.Users.AnyAsync(u => u.username == user.username && u.userid != userid);
             if (emailCheck || usernameCheck)
             {
-                return new GeneralResponseModel(ResponseCode.UserAlreadyExists, "User already exists with this email or username");
+                return GeneralResponseModel<object>.ErrorResponse(ResponseCode.UserAlreadyExists,"A user with these details already exists.");
             }
 
             // Find the user by ID
             var selectedUser = await _context.Users.FindAsync(userid);
             if (selectedUser == null)
             {
-                return new GeneralResponseModel(ResponseCode.Failure, "No user found");
+                return GeneralResponseModel<object>.ErrorResponse("No user found");
             }
 
             // Update the user properties
@@ -128,11 +128,11 @@ namespace MobileAppAPI.Services.Accounts
             var result = await _context.SaveChangesAsync();
             if (result > 0)
             {
-                return new GeneralResponseModel(ResponseCode.Success, "Updated user successfully");
+                return GeneralResponseModel<object>.SuccessResponse();
             }
             else
             {
-                return new GeneralResponseModel(ResponseCode.Failure, "Failed to update the user");
+                return GeneralResponseModel<object>.ErrorResponse("Failed to update user");
             }
 
         }
@@ -142,24 +142,24 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="userid">the id of the user to remove</param>
         /// <returns>A response indicating whether the user was removed succesfully</returns>
-        public async Task<GeneralResponseModel> DeleteUser(Guid userid)
+        public async Task<GeneralResponseModel<object>> DeleteUser(Guid userid)
         {
             // Find the user by ID
             var selectedUser = await _context.Users.FindAsync(userid);
             if (selectedUser == null)
             {
-                return new GeneralResponseModel(ResponseCode.Failure, "No user found");
+                return GeneralResponseModel<object>.ErrorResponse("User not found");
             }
             var userRefreshTokens = _context.RefreshTokens.Where(rt => rt.userid == selectedUser.userid).ToList();
             _context.RefreshTokens.RemoveRange(userRefreshTokens);
             _context.Users.Remove(selectedUser);
             if (await _context.SaveChangesAsync() >= 1)
             {
-                return new GeneralResponseModel(ResponseCode.Success, "User deleted succesfully");
+                return GeneralResponseModel<object>.SuccessResponse();
             }
 
 
-            return new GeneralResponseModel(ResponseCode.Failure, "Failed to delete the user");
+            return GeneralResponseModel<object>.ErrorResponse("Failed to delete user");
 
         }
 
@@ -168,13 +168,13 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="user">The userid of the user to retrieve</param>
         /// <returns>A model containing the user information visible</returns>
-        public async Task<UserResponseModel> GetUser(Guid userid)
+        public async Task<GeneralResponseModel<UserResponseModel>> GetUser(Guid userid)
         {
             // Find the user by ID
             var selectedUser = await _context.Users.FindAsync(userid);
             if (selectedUser == null)
             {
-                return new UserResponseModel();
+                return GeneralResponseModel<UserResponseModel>.ErrorResponse("User not found");
             }
             UserResponseModel response = new UserResponseModel
             {
@@ -185,7 +185,7 @@ namespace MobileAppAPI.Services.Accounts
             };
 
 
-            return response;
+            return GeneralResponseModel<UserResponseModel>.SuccessResponse(response);
 
         }
 
@@ -249,7 +249,7 @@ namespace MobileAppAPI.Services.Accounts
             };
 
             return trm;
-        }
+        } 
 
         /// <summary>
         /// Verifies the existence of a given refresh token
@@ -267,7 +267,7 @@ namespace MobileAppAPI.Services.Accounts
         /// </summary>
         /// <param name="refreshToken">The refresh token to look up</param>
         /// <returns>A User</returns>
-        public async Task<UserModel> GetUserByRefreshToken(string refreshToken)
+        public async Task<GeneralResponseModel<UserModel>> GetUserByRefreshToken(string refreshToken)
         {
             // Retrieve the user associated with the refresh token from the Users and RefreshTokens tables
             var user = await _context.Users
@@ -281,7 +281,7 @@ namespace MobileAppAPI.Services.Accounts
                 .Select(joined => joined.User)
                 .FirstOrDefaultAsync();
 
-            return user;
+            return GeneralResponseModel<UserModel>.SuccessResponse(user);
         }
 
         /// <summary>

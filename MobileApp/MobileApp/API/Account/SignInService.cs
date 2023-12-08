@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MobileApp.Models.Account;
+using MobileApp.Models;
+using MobileApp.API.GeneralResponses;
 
 namespace MobileApp.API.Account
 {
@@ -21,20 +23,24 @@ namespace MobileApp.API.Account
         {
             try
             {
-                var signInModel = new SignInModel { Username = username, Password = password }; 
+                var signInModel = new SignInModel { Username = username, Password = password };
                 var json = JsonConvert.SerializeObject(signInModel);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync(URLS.SignInEndpoint, content);
                 response.EnsureSuccessStatusCode();
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var token = JsonConvert.DeserializeObject<TokenResponseModel>(responseContent);
+                var generalResponse = JsonConvert.DeserializeObject<GeneralResponseModel<TokenResponseModel>>(responseContent);
 
-                return token.AccessToken;
+                if (generalResponse != null && generalResponse.Code == ResponseCode.Success)
+                {
+                    return generalResponse.Data?.AccessToken;
+                }
+
+                return null;
             }
             catch (Exception ex)
             {
-                // Handle error
                 return null;
             }
         }
@@ -42,7 +48,7 @@ namespace MobileApp.API.Account
         {
             try
             {
-                var refreshModel = new RefreshTokenModel { Token = refreshToken }; 
+                var refreshModel = new RefreshTokenModel { Token = refreshToken };
                 var json = JsonConvert.SerializeObject(refreshModel);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -50,13 +56,17 @@ namespace MobileApp.API.Account
                 response.EnsureSuccessStatusCode();
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var token = JsonConvert.DeserializeObject<TokenResponseModel>(responseContent);
+                var generalResponse = JsonConvert.DeserializeObject<GeneralResponseModel<TokenResponseModel>>(responseContent);
 
-                return token.AccessToken;
+                if (generalResponse != null && generalResponse.Code == ResponseCode.Success)
+                {
+                    return generalResponse.Data?.AccessToken;
+                }
+
+                return null;
             }
             catch (Exception ex)
             {
-                // Handle error
                 return null;
             }
         }
