@@ -1,7 +1,7 @@
 USE [mobileapp]
 GO
 
-/****** Object:  Table [dbo].[ChatSessions]    Script Date: 12/6/2023 10:57:48 PM ******/
+/****** Object:  Table [dbo].[ChatSessions]    Script Date: 1/8/2024 9:40:36 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -13,7 +13,6 @@ CREATE TABLE [dbo].[ChatSessions](
 	[CreatedAt] [datetime] NOT NULL,
 	[ChatSessionName] [nvarchar](255) NULL,
 	[IsGroupChat] [bit] NOT NULL,
-	[SessionStatus] [nvarchar](50) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[ChatId] ASC
