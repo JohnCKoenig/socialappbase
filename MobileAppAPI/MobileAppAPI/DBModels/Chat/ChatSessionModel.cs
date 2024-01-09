@@ -10,6 +10,5 @@ namespace MobileAppAPI.DBModels.Chat
         public DateTime CreatedAt {  get; set; }
         public string ChatSessionName { get; set; }
         public bool IsGroupChat {  get; set; }
-        public ChatSessionStatus SessionStatus { get; set; }
     }
 }

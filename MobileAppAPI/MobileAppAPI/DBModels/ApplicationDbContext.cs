@@ -11,11 +11,18 @@ namespace MobileAppAPI.DBModels
         public DbSet<PostModel> Posts { get; set; }
         public DbSet<RefreshTokenModel> RefreshTokens { get; set; }
         public DbSet<ChatSessionModel> ChatSessions { get; set; }
-        public DbSet<ParticipantModel> Participants { get; set; }
+        public DbSet<ParticipantModel> ChatParticipants { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ParticipantModel>()
+                .HasKey(p => new { p.ChatId, p.UserId });
         }
     }
 }

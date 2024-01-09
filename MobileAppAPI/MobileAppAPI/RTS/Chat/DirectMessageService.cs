@@ -1,15 +1,32 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using MobileAppAPI.DBModels;
+using MobileAppAPI.Services.Chat;
 
 namespace MobileAppAPI.RTS.Chat
 {
     [Authorize]
     public class DirectMessageService : Hub
     {
+        private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
+
+        public DirectMessageService(ApplicationDbContext context, IConfiguration configuration)
+        {
+            _context = context;
+            _configuration = configuration;
+        }
 
         public async Task SendMessageToUser(string receiverUserId, string message)
         {
-            await Clients.User(receiverUserId).SendAsync("ReceiveMessage", Context.User?.FindFirst(System.Security.Claims.ClaimTypes.Name).Value, message);
+            var sender = Context.User?.FindFirst(System.Security.Claims.ClaimTypes.Name).Value;
+            if (sender != null && receiverUserId!=null)
+            {
+                await Clients.User(receiverUserId).SendAsync("ReceiveMessage", sender, message);
+                DirectChatSessionService chatsrv = new DirectChatSessionService(_context, _configuration);
+                await chatsrv.CreateSession(Guid.Parse(sender), Guid.Parse(receiverUserId));
+            }
+          
         }
         public override async Task OnConnectedAsync()
         {

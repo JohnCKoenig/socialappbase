@@ -19,5 +19,8 @@
         ///</summary>
         RecipientDoesNotExist,
         ReflectiveChat,
+        ChatSessionDoesNotExist,
+        ParticipantDoesNotExist,
+
     }
 }

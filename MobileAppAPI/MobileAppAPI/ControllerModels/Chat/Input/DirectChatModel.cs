@@ -2,6 +2,7 @@
 {
     public class DirectChatModel
     {
+        public Guid SessionID { get; set; } 
         public Guid RecipientID { get; set; }
     }
 }
