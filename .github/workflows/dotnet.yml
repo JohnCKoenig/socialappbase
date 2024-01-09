@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -22,10 +23,10 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       working-directory: ./MobileAppAPI
-      run: dotnet restore
+      run: dotnet restore ./MobileAppAPI.sln
     - name: Build
       working-directory: ./MobileAppAPI
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore ./MobileAppAPI.sln
     - name: Test
       working-directory: ./MobileAppAPI
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal ./MobileAppAPI.sln
